@@ -10,8 +10,9 @@ namespace Avtomobil
         static void Main(string[] args)
         {
             List<Avto> cars = new List<Avto>();
+            List<AvtoBus> bus = new List<AvtoBus>();
             Console.WriteLine("> Доброго времени суток.");
-            Avto.Menu3(cars);
+            Avto.Menu3(cars, bus);
         }
     }
 }

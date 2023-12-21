@@ -11,10 +11,11 @@ namespace Avtomobil
         protected double otsihdosih;
         protected int ostanovky;
         protected int mesta;
+        protected List<AvtoBus> bus = new List<AvtoBus>();
         protected List<Avto> cars = new List<Avto>();
         public string? Nom { get { return nom; } }
-        public AvtoBus() { Menu(cars); }
-        protected override void Info(List<Avto> cars)
+        public AvtoBus() { Menu(cars, bus); }
+        protected override void Info(List<Avto> cars, List<AvtoBus> bus)
         {
             Console.WriteLine("> Номер машины (А000АА):");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -30,7 +31,7 @@ namespace Avtomobil
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ваш расход топлива катастрофически велик!");
                 Console.ForegroundColor = ConsoleColor.White;
-                Info(cars);
+                Info(cars, bus );
             }
             Console.WriteLine("> Вместительность:");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -44,9 +45,9 @@ namespace Avtomobil
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Данные сохранены.");
             Console.ForegroundColor = ConsoleColor.White;
-            Menu2(cars);
+            Menu2(cars, bus);
         }
-        protected override void Menu(List<Avto> cars)
+        protected override void Menu(List<Avto> cars, List<AvtoBus> bus)
         {
             Console.WriteLine("> Бортовое меню:\n1 - Внести информацию по машине; 2 - Выход в меню автомобилей.");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -55,12 +56,12 @@ namespace Avtomobil
             switch (vybor2)
             {
                 case "1":
-                    Info(cars); break;
+                    Info(cars, bus); break;
                 case "2":
-                    Menu3(cars); break;
+                    Menu3(cars, bus); break;
             }
         }
-        protected override void Menu2(List<Avto> cars)
+        protected override void Menu2(List<Avto> cars, List<AvtoBus> bus)
         {
 
                 Console.WriteLine("> Бортовое меню:\n1 - Изменить Ваш маршрут; 2 - Разогнаться; 3 - Тормозить; 4 - Заправиться; 5 - Выход в меню автомобилей; 6 - Авария.");
@@ -70,7 +71,7 @@ namespace Avtomobil
                 switch (vybor2)
                 {
                     case "1":
-                        Info2(cars); break;
+                        Info2(cars, bus); break;
                     case "2":
                         Razgon(cars); break;
                     case "3":
@@ -78,13 +79,35 @@ namespace Avtomobil
                     case "4":
                         Zapravka(cars); break;
                     case "5":
-                        Menu3(cars); break;
+                        Menu3(cars, bus); break;
                     case "6":
                         Avaria(cars); break;
                 }
         }
-        protected override void Info2(List<Avto> cars)
+        protected override void Info2(List<Avto> cars, List<AvtoBus> bus)
         {
+            if (dist > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("! МАРШРУТ УЖЕ ЗАДАН !");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("> Желаете обнулить? (да/нет)");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                string? yesno = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                switch (yesno)
+                {
+                    case "да":
+                        dist = 0;
+                        break;
+                    case "нет":
+                        Console.WriteLine("");
+                        break;
+                }
+                Menu2(cars, bus);
+            }
+            if (dist == 0)
+            {
                 speed = 0;
                 Console.WriteLine("'МАРШРУТ'");
                 Console.WriteLine("> Введите координаты Вашего маршрута: ");
@@ -109,7 +132,8 @@ namespace Avtomobil
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"Ваш маршрут: {dist}. \nОстановок: {ostanovky}. \nСчастливого пути!");
                 this.rasst = 0;
-                Menu2(cars);
+                Menu2(cars, bus);
+            }
         }
         protected override void Razgon(List<Avto> cars)
         {
@@ -118,7 +142,7 @@ namespace Avtomobil
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("! Маршрут не задан !");
                     Console.ForegroundColor = ConsoleColor.White;
-                    Menu2(cars);
+                    Menu2(cars, bus);
                 }
                 else if (dist > 0)
                 {
@@ -126,8 +150,8 @@ namespace Avtomobil
                     {
                         speed += 10;
                         Out();
-                        Ezda(cars);
-                        Menu2(cars);
+                        Ezda(cars, bus);
+                        Menu2(cars, bus);
                     }
                     else if (top == 0)
                     {
@@ -166,20 +190,10 @@ namespace Avtomobil
                             case "нет":
                                 Stop(cars); break;
                         }
-                    }
-                    if (speed == 50)
-                    {
-                        speed = 50;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("! ЭТО МАКСИМАЛЬНО ДОПУСТИМАЯ СКОРОСТЬ !");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Out();
-                        Ezda(cars);
-                        Menu2(cars);
-                    }
+                    }                   
                 }
         }
-        protected override void Ezda(List<Avto> cars)
+        protected override void Ezda(List<Avto> cars, List<AvtoBus> bus)
         {
             if (speed > 0) //Если машина в принципе поехала
             {
@@ -217,21 +231,55 @@ namespace Avtomobil
                     }
                 }
             }
-            if (rasst >= dist & dist != 0) //Для цели поездки
+            /*if (speed == 50)
+            {
+                speed = 50;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("! ЭТО МАКСИМАЛЬНО ДОПУСТИМАЯ СКОРОСТЬ !");
+                Console.ForegroundColor = ConsoleColor.White;
+                //Out();
+                //Ezda(cars);
+                Menu2(cars);
+            }*/
+            if (rasst >= dist & dist != 0) //Для маршрута
             {
                 double v = dist - (rasst - 100);
                 top = (v * ras) / 100;
                 probeg += v - 100;
                 speed = 0;
-                dist = 0;
                 rasst = 0;
+                Console.WriteLine("");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("КОНЕЧНАЯ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Хотите задать ещё одну? Обратитесь в соответствующую вкладку меню.");
-                Menu2(cars);
+                Console.WriteLine("Едем обратно.");
+                Console.WriteLine("");
+                Stop(cars);
             }
             if (top < 2 && rasst < dist && rasst != 0)
+            {
+                probeg += kilometragh - 100;
+                rasst += kilometragh - 100;
+                top = 0;
+                speed = 0;
+            }
+            if (rasst >= (2 * dist) & dist != 0) //Для маршрута
+            {
+                double v = (2 * dist) - (rasst - 100);
+                top = (v * ras) / 100;
+                probeg += v - 100;
+                speed = 0;
+                rasst = 0;
+                dist = 0;
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("КОНЕЧНАЯ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Едем обратно.");
+                Console.WriteLine("");
+                Stop(cars);
+            }
+            if (top < 2 && rasst < (2 * dist) && rasst != 0)
             {
                 probeg += kilometragh - 100;
                 rasst += kilometragh - 100;
@@ -264,7 +312,7 @@ namespace Avtomobil
             }
             else
             {
-                Menu2(cars);
+                Menu2(cars, bus);
             }
         }
     }
