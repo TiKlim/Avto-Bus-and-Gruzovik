@@ -273,9 +273,8 @@ namespace Avtomobil
                 dist = 0;
                 Console.WriteLine("");
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("КОНЕЧНАЯ");
+                Console.WriteLine("АВТОБУС ПРИБЫЛ НА КОНЕЧНУЮ ОСТАНОВКУ");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Едем обратно.");
                 Console.WriteLine("");
                 Stop(cars);
             }
