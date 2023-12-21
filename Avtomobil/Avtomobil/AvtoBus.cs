@@ -285,6 +285,20 @@ namespace Avtomobil
                 top = 0;
                 speed = 0;
             }
+            if (rasst >= otsihdosih & otsihdosih != 0) //Для маршрута
+            {
+                double v = otsihdosih - (rasst - 100);
+                top = (v * ras) / 100;
+                probeg += v - 100;
+                speed = 0;
+                rasst = 0;
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("ОСТАНОВКА");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("");
+                Stop(cars);
+            }
             kilometragh = Math.Round((top / ras) * 100); //На сколько километров хватит бензина
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
             Console.WriteLine("Пройдено:     Пробег:      Остаток топлива:      Километраж при текущем уровне бензина в баке:    Скорость:");
