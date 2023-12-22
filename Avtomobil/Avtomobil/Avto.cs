@@ -25,11 +25,11 @@ namespace Avtomobil
         protected int koordinataYb; //Координата Y конечная
         protected double dist; //Дистанция
         protected int type; //Тип машины
-        protected List<Avto> cars = new List<Avto>();
-        protected List<AvtoBus> bus = new List<AvtoBus>();
+        static public List<Avto> cars;
+
         public string? Nom { get { return nom; } }
-        public Avto() { Menu(cars, bus); }
-        protected virtual void Info(List<Avto> cars, List<AvtoBus> bus) //Информация об автомобиле
+        public Avto() { Menu(cars); }
+        protected virtual void Info(List<Avto> cars ) //Информация об автомобиле
         {            
             Console.WriteLine("> Номер машины (А000АА):");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -45,7 +45,7 @@ namespace Avtomobil
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ваш расход топлива катастрофически велик!");
                 Console.ForegroundColor = ConsoleColor.White;
-                Info(cars, bus);
+                Info(cars);
             }
             this.speed = 0;
             this.top = 0;
@@ -55,9 +55,8 @@ namespace Avtomobil
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Данные сохранены.");
             Console.ForegroundColor = ConsoleColor.White;
-            Menu2(cars, bus);
         }
-        protected virtual void Info2(List<Avto> cars, List<AvtoBus> bus)
+        protected virtual void Info2(List<Avto> cars)
         {
                 speed = 0;
                 Console.WriteLine("'Моя поездка'");
@@ -78,15 +77,15 @@ namespace Avtomobil
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"Ваша цель поездки: {dist}. Счастливого пути!");
                 this.rasst = 0;
-                Menu2(cars, bus);
+                Menu2(cars);
         }
         protected void Stop(List<Avto> cars) //Торможение
         {
             speed = 0;
             rasst = 0;
             Out();
-            Ezda(cars, bus);
-            Menu2(cars, bus);
+            Ezda(cars);
+            Menu2(cars);
         }
         protected virtual void Razgon(List<Avto> cars) //Разгон
         {
@@ -95,7 +94,7 @@ namespace Avtomobil
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("! Цель поездки не задана !");
                     Console.ForegroundColor = ConsoleColor.White;
-                    Menu2(cars, bus);
+                    Menu2(cars);
                 }
                 else if (dist > 0)
                 {
@@ -103,8 +102,8 @@ namespace Avtomobil
                     {
                         speed += 10;
                         Out();
-                        Ezda(cars, bus);
-                        Menu2(cars, bus);
+                        Ezda(cars);
+                        Menu2(cars);
                     }
                     else if (top == 0)
                     {
@@ -158,18 +157,18 @@ namespace Avtomobil
                 top += zap;
                 Console.WriteLine($"Бак заправлен. Сейчас: {top} литров.");
                 //speed += 10;
-                Menu2(cars, bus);
+                Menu2(cars);
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("! Бак переполнен !");
                 Console.ForegroundColor = ConsoleColor.White;
-                Menu2(cars, bus);
+                Menu2(cars );
             }
             return top;
         }
-        protected virtual void Ezda(List<Avto> cars, List<AvtoBus> bus)
+        protected virtual void Ezda(List<Avto> cars)
         {
                 if (speed > 0) //Если машина в принципе поехала
                 {
@@ -219,7 +218,7 @@ namespace Avtomobil
                     Console.WriteLine("Ура! Вы преодолели свою цель поездки!");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Хотите задать ещё одну? Обратитесь в соответствующую вкладку меню.");
-                    Menu2(cars, bus);
+                    Menu2(cars);
                 }
                 if (top < 2 && rasst < dist && rasst != 0)
                 {
@@ -254,7 +253,7 @@ namespace Avtomobil
                 }
                 else
                 {
-                    Menu2(cars, bus);
+                    Menu2(cars);
                 }            
         }
         protected virtual void Out()
@@ -266,7 +265,7 @@ namespace Avtomobil
                 }
                 Console.WriteLine($"Номер авто: {nom} \nОбъём бака: {bak} \nРасход топлива (на 100 км): {ras}");
         }
-        protected virtual void Menu(List<Avto> cars, List<AvtoBus> bus)
+        protected virtual void Menu(List<Avto> cars)
         {
             Console.WriteLine("> Бортовое меню:\n1 - Внести информацию по машине; 2 - Выход в меню автомобилей.");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -275,12 +274,12 @@ namespace Avtomobil
             switch (vybor2)
             {
                 case "1":
-                    Info(cars, bus); break;
+                    Info(cars); break;
                 case "2":
-                    Menu3(cars, bus); break;
+                    Menu3(cars); break;
             }
         }
-        protected virtual void Menu2(List<Avto> cars, List<AvtoBus> bus)
+        protected virtual void Menu2(List<Avto> cars)
         {
                 Console.WriteLine("> Бортовое меню:\n1 - Изменить Вашу цель поездки; 2 - Разогнаться; 3 - Тормозить; 4 - Заправиться; 5 - Выход в меню автомобилей; 6 - Авария.");
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -289,7 +288,7 @@ namespace Avtomobil
                 switch (vybor2)
                 {
                     case "1":
-                        Info2(cars, bus); break;
+                        Info2(cars); break;
                     case "2":
                         Razgon(cars); break;
                     case "3":
@@ -297,93 +296,128 @@ namespace Avtomobil
                     case "4":
                         Zapravka(cars); break;
                     case "5":
-                        Menu3(cars, bus); break;
+                        Menu3(cars); break;
                     case "6":
                         Avaria(cars); break;
                 }           
         }
-        public static void Menu3(List<Avto> cars, List<AvtoBus> bus)
+
+        public static void Menu3(List<Avto> cars)
         {
             Avto car;
-            AvtoBus carbus;
             while (true)
             {
-                Console.WriteLine("> Общее меню:\n1 - Выбрать новый автомобиль; 2 - Выбрать обкатанный автомобиль.         " + cars.Count + bus.Count);
+                Console.WriteLine("> Общее меню:\n1 - Выбрать новый автомобиль; 2 - Выбрать обкатанный автомобиль.");
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 string? vybor1 = Console.ReadLine();
                 Console.ForegroundColor = ConsoleColor.White;
                 if (vybor1 == "1")
                 {
-                    Console.WriteLine("> Тип машины (1 - Легковая; 2 - Грузовая; 3 - Общественно-городская.)");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    int type = Convert.ToInt32(Console.ReadLine());
-                    Console.ForegroundColor = ConsoleColor.White;
-                    switch (type)
-                    {
-                        case 1:
-                            cars.Add(new Avto());
-                            break;
-                        case 2:
-                            Console.WriteLine();
-                            break;
-                        case 3:
-                            bus.Add(new AvtoBus());
-                            break;
-                    }
-                                       
+                    cars.Add(new Avto());
+                }
+                else if (vybor1 == "0")
+                {
+                    cars.Add(new AvtoBus());
                 }
                 else if (vybor1 == "2")
                 {
-                    if (cars.Count == 0 & bus.Count == 0)
+                    foreach (Avto a in cars)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("! НЕТ ДОСТУПНЫХ АВТОМОБИЛЕЙ !");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    else if (cars.Count > 0 & bus.Count > 0)
-                    {
-                        Console.WriteLine("> Тип машины (1 - Легковая; 2 - Грузовая; 3 - Общественно-городская.)");
+                        Console.WriteLine("Введите номер автомобиля: ");
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        int type = Convert.ToInt32(Console.ReadLine());
+                        string? s = Console.ReadLine();
                         Console.ForegroundColor = ConsoleColor.White;
-                        switch (type)
+                        if (s == a.Nom)
                         {
-                            case 1:
-                                foreach (Avto a in cars)
-                                {
-                                    Console.WriteLine("> Введите номер автомобиля: ");
-                                    Console.ForegroundColor = ConsoleColor.Cyan;
-                                    string? s = Console.ReadLine();
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                    if (s == a.Nom)
-                                    {
-                                        car = a;
-                                        car.Menu2(cars, bus);
-                                    }
-                                }
-                                break;
-                            case 2:
-                                Console.WriteLine() ; 
-                                break;
-                            case 3:
-                                foreach (AvtoBus b in bus)
-                                {
-                                    Console.WriteLine("> Введите номер автомобиля: ");
-                                    Console.ForegroundColor = ConsoleColor.Cyan;
-                                    string? q = Console.ReadLine();
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                    if (q == b.Nom)
-                                    {
-                                        carbus = b;
-                                        carbus.Menu2(cars, bus);
-                                    }
-                                }
-                                break;
-                        }                       
+                            car = a;
+                            car.Menu2(cars);
+                        }
                     }
                 }
             }
-        }        
+        }
+        /* public void Menu3(List<Avto> cars, List<AvtoBus> bus)
+         {
+             Avto car;
+             AvtoBus carbus;
+             while (true)
+             {
+                 Console.WriteLine("> Общее меню:\n1 - Выбрать новый автомобиль; 2 - Выбрать обкатанный автомобиль.         " + cars.Count + bus.Count);
+                 Console.ForegroundColor = ConsoleColor.Cyan;
+                 string? vybor1 = Console.ReadLine();
+                 Console.ForegroundColor = ConsoleColor.White;
+                 if (vybor1 == "1")
+                 {
+                     Console.WriteLine("> Тип машины (1 - Легковая; 2 - Грузовая; 3 - Общественно-городская.)");
+                     Console.ForegroundColor = ConsoleColor.Cyan;
+                     int type = Convert.ToInt32(Console.ReadLine());
+                     Console.ForegroundColor = ConsoleColor.White;
+                     switch (type)
+                     {
+                         case 1:
+                             cars.Add(new Avto());
+                             break;
+                         case 2:
+                             Console.WriteLine();
+                             break;
+                         case 3:
+                             bus.Add(new AvtoBus());
+                             //AvtoBus.Suda(bus);
+                             break;
+                     }                                      
+                 }
+                 else if (vybor1 == "2")
+                 {
+                     if (cars.Count == 0 & bus.Count == 0)
+                     {
+                         Console.ForegroundColor = ConsoleColor.Red;
+                         Console.WriteLine("! НЕТ ДОСТУПНЫХ АВТОМОБИЛЕЙ !");
+                         Console.ForegroundColor = ConsoleColor.White;
+                     }
+                     else if (cars.Count > 0 & bus.Count > 0)
+                     {
+                         Console.WriteLine("> Тип машины (1 - Легковая; 2 - Грузовая; 3 - Общественно-городская.)");
+                         Console.ForegroundColor = ConsoleColor.Cyan;
+                         int type = Convert.ToInt32(Console.ReadLine());
+                         Console.ForegroundColor = ConsoleColor.White;
+                         switch (type)
+                         {
+                             case 1:
+                                 foreach (Avto a in cars)
+                                 {
+                                     Console.WriteLine("> Введите номер автомобиля: ");
+                                     Console.ForegroundColor = ConsoleColor.Cyan;
+                                     string? s = Console.ReadLine();
+                                     Console.ForegroundColor = ConsoleColor.White;
+                                     if (s == a.Nom)
+                                     {
+                                         car = a;
+                                         car.Menu2(cars, bus);
+                                     }
+                                 }
+                                 break;
+                             case 2:
+                                 Console.WriteLine() ; 
+                                 break;
+                             case 3:
+                                 foreach (AvtoBus b in bus)
+                                 {
+                                     Console.WriteLine("> Введите номер автомобиля: ");
+                                     Console.ForegroundColor = ConsoleColor.Cyan;
+                                     string? q = Console.ReadLine();
+                                     Console.ForegroundColor = ConsoleColor.White;
+                                     if (q == b.Nom)
+                                     {
+                                         carbus = b;
+                                         carbus.Menu2(cars, bus);
+                                     }
+                                 }
+                                 break;
+                         }                       
+                     }
+                 }
+             }
+         }     */
         protected void Avaria(List<Avto> cars) //Авария
         {
             if (cars.Count == 1)
@@ -417,13 +451,13 @@ namespace Avtomobil
                                 cars[j].dist = 0;
                                 Console.WriteLine("Aвтомобиль сопрекоснулся с другим автомобилем.");
                                 Console.WriteLine("");
-                                Menu2(cars, bus);
+                                Menu2(cars);
                             }
                             else
                             {
                                 Console.WriteLine("Аварии не случилось.");
                                 Console.WriteLine("");
-                                Menu2(cars, bus);
+                                Menu2(cars);
                             }
                         }
                     }
