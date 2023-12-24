@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\prdb\\Klim\\Avtomobil\\Avtomobil\\Avtomobil.csproj": {}
+    "C:\\Users\\Клим\\source\\repos\\Avtomobil\\Avtomobil\\Avtomobil.csproj": {}
   },
   "projects": {
-    "C:\\Users\\prdb\\Klim\\Avtomobil\\Avtomobil\\Avtomobil.csproj": {
+    "C:\\Users\\Клим\\source\\repos\\Avtomobil\\Avtomobil\\Avtomobil.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\prdb\\Klim\\Avtomobil\\Avtomobil\\Avtomobil.csproj",
+        "projectUniqueName": "C:\\Users\\Клим\\source\\repos\\Avtomobil\\Avtomobil\\Avtomobil.csproj",
         "projectName": "Avtomobil",
-        "projectPath": "C:\\Users\\prdb\\Klim\\Avtomobil\\Avtomobil\\Avtomobil.csproj",
-        "packagesPath": "C:\\Users\\prdb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\prdb\\Klim\\Avtomobil\\Avtomobil\\obj\\",
+        "projectPath": "C:\\Users\\Клим\\source\\repos\\Avtomobil\\Avtomobil\\Avtomobil.csproj",
+        "packagesPath": "C:\\Users\\Клим\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Клим\\source\\repos\\Avtomobil\\Avtomobil\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\prdb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Клим\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,8 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Users\\prdb\\Desktop": {},
-          "C:\\Users\\prdb\\nuget": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

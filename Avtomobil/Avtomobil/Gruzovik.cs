@@ -6,35 +6,35 @@ using System.Threading.Tasks;
 
 namespace Avtomobil
 {
-    internal class AvtoBus : Avto
+    internal class Gruzovik : Avto
     {
-        protected double otsihdosih;
-        protected int ostanovky;
-        protected int mesta;
+        protected int ves;
+        protected int pogruzka;
+        protected double ot;
+        protected double ido;
         public string? Nom { get { return nom; } }
-        public AvtoBus() { Menu(cars); }
-        public static int metod = 0;
+        public Gruzovik() { Menu(cars); }
         protected override void Info(List<Avto> cars)
         {
             Console.WriteLine("> Номер машины (А000АА):");
             Console.ForegroundColor = ConsoleColor.Cyan;
             this.nom = Console.ReadLine();
             Console.ForegroundColor = ConsoleColor.White;
-            this.bak = 60;
+            this.bak = 80;
             Console.WriteLine("> Расход топлива (на 100 км):");
             Console.ForegroundColor = ConsoleColor.Cyan;
             this.ras = float.Parse(Console.ReadLine());
             Console.ForegroundColor = ConsoleColor.White;
-            if (ras >= (60 / 2))
+            if (ras >= (80 / 2))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ваш расход топлива катастрофически велик!");
                 Console.ForegroundColor = ConsoleColor.White;
                 Info(cars);
             }
-            Console.WriteLine("> Вместительность:");
+            Console.WriteLine("> Грузоподъёмность:");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            this.mesta = Convert.ToInt32(Console.ReadLine());
+            this.ves = Convert.ToInt32(Console.ReadLine());
             Console.ForegroundColor = ConsoleColor.White;
             this.speed = 0;
             this.top = 0;
@@ -119,16 +119,31 @@ namespace Avtomobil
                 this.koordinataXb = Convert.ToInt32(Console.ReadLine());
                 this.koordinataYb = Convert.ToInt32(Console.ReadLine());
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("> Количество остановок на маршруте: ");
+                Console.WriteLine("> Точка погрузки (через сколько километров будет погрузка): ");
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                this.ostanovky = Convert.ToInt32(Console.ReadLine());
+                this.pogruzka = Convert.ToInt32(Console.ReadLine());
                 Console.ForegroundColor = ConsoleColor.White;
                 this.dist = 2 * (Math.Round(Math.Sqrt(((koordinataXb - koordinataXa) * (koordinataXb - koordinataXa)) + ((koordinataYb - koordinataYa) * (koordinataYb - koordinataYa)))));
-                this.otsihdosih = Math.Round((dist/2) / ostanovky); //!!!
+                if (pogruzka > dist)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Вы не можете назначить точку погрузки дальше точки разгрузки {dist} км!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Info(cars);
+                }
+                if (pogruzka <= 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Пожалуйста, введите точку погрузки!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Info(cars);
+                }
+                this.ot = 0 + pogruzka;
+                this.ido = (dist/2) - pogruzka;
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Данные сохранены.");
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"Ваш маршрут: {dist/2}. \nОстановок: {ostanovky}. \nСчастливого пути!"); //!!!
+                Console.WriteLine($"Ваш маршрут: {dist / 2} км. \nТочка погрузки через: {pogruzka} км. \nУдачи на дороге!"); //!!!
                 this.rasst = 0;
                 Menu2(cars);
             }
@@ -249,17 +264,17 @@ namespace Avtomobil
             }*/
             while (probeg <= dist / 2)
             {
-                if (probeg >= dist / 2 & dist / 2 != 0) //Для маршрута !!!
+                if (probeg >= pogruzka) //Для маршрута !!!
                 {
                     double v = (dist / 2) - (probeg - 100);
                     top = (v * ras) / 100;
                     //probeg += v - 100;
-                    probeg = dist / 2;
+                    probeg = pogruzka;
                     speed = 0;
                     rasst = 0;
                     Console.WriteLine("");
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("КОНЕЧНАЯ");
+                    Console.WriteLine("ВЫ ПРИБЫЛИ В ТОЧКУ ПОГРУЗКИ");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("");
                     //Stop(cars);
@@ -288,16 +303,14 @@ namespace Avtomobil
                 }
                 if (rasst >= otsihdosih & otsihdosih != 0 & probeg != dist / 2 & probeg != otsihdosih * ostanovky) //Для маршрута
                 {
-                    metod += 1;
-                    /*if ((probeg - 100) < otsihdosih)
+                    if ((probeg - 100) < otsihdosih)
                     {
                         rasst = otsihdosih;
                     }
                     if ((probeg - 100) >= otsihdosih)
                     {
                         rasst = otsihdosih + otsihdosih;
-                    }*/
-                    rasst = otsihdosih;
+                    }
                     double v = rasst - (probeg - 100);
                     double k = (v * ras) / 100;
                     top = (top + 10) - k;
@@ -309,7 +322,7 @@ namespace Avtomobil
                     if ((probeg - 100) >= otsihdosih)
                     {
                         probeg = otsihdosih + otsihdosih;
-                        rasst = otsihdosih + otsihdosih;                       
+                        rasst = otsihdosih + otsihdosih;
                     }
                     speed = 0;
                     rasst = 0;
@@ -349,7 +362,7 @@ namespace Avtomobil
                     Menu2(cars);
                 }
             }
-            while (probeg <= dist & probeg >= dist/2 || probeg >= dist)
+            while (probeg <= dist & probeg >= dist / 2 || probeg >= dist)
             {
                 if (probeg >= dist & dist != 0) //Для маршрута
                 {
@@ -435,7 +448,7 @@ namespace Avtomobil
                 {
                     Menu2(cars);
                 }
-            }            
+            }
         }
     }
 }

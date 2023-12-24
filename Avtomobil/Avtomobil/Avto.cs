@@ -26,11 +26,11 @@ namespace Avtomobil
         protected double dist; //Дистанция
         protected int type; //Тип машины
         static public List<Avto> cars;
-
         public string? Nom { get { return nom; } }
-        public Avto() { Menu(cars); }
-        protected virtual void Info(List<Avto> cars ) //Информация об автомобиле
-        {            
+        public Avto() { }
+        public Avto(int a) { Menu(cars); }
+        protected virtual void Info(List<Avto> cars) //Информация об автомобиле
+        {
             Console.WriteLine("> Номер машины (А000АА):");
             Console.ForegroundColor = ConsoleColor.Cyan;
             this.nom = Console.ReadLine();
@@ -58,28 +58,28 @@ namespace Avtomobil
         }
         protected virtual void Info2(List<Avto> cars)
         {
-                speed = 0;
-                Console.WriteLine("'Моя поездка'");
-                Console.WriteLine("> Введите координаты Вашего путешествия:");
-                Console.WriteLine("> Начало пути: ");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                this.koordinataXa = Convert.ToInt32(Console.ReadLine());
-                this.koordinataYa = Convert.ToInt32(Console.ReadLine());
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("> Конец пути: ");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                this.koordinataXb = Convert.ToInt32(Console.ReadLine());
-                this.koordinataYb = Convert.ToInt32(Console.ReadLine());
-                Console.ForegroundColor = ConsoleColor.White;
-                this.dist = Math.Round(Math.Sqrt(((koordinataXb - koordinataXa) * (koordinataXb - koordinataXa)) + ((koordinataYb - koordinataYa) * (koordinataYb - koordinataYa))));
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Данные сохранены.");
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"Ваша цель поездки: {dist}. Счастливого пути!");
-                this.rasst = 0;
-                Menu2(cars);
+            speed = 0;
+            Console.WriteLine("'Моя поездка'");
+            Console.WriteLine("> Введите координаты Вашего путешествия:");
+            Console.WriteLine("> Начало пути: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            this.koordinataXa = Convert.ToInt32(Console.ReadLine());
+            this.koordinataYa = Convert.ToInt32(Console.ReadLine());
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("> Конец пути: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            this.koordinataXb = Convert.ToInt32(Console.ReadLine());
+            this.koordinataYb = Convert.ToInt32(Console.ReadLine());
+            Console.ForegroundColor = ConsoleColor.White;
+            this.dist = Math.Round(Math.Sqrt(((koordinataXb - koordinataXa) * (koordinataXb - koordinataXa)) + ((koordinataYb - koordinataYa) * (koordinataYb - koordinataYa))));
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Данные сохранены.");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"Ваша цель поездки: {dist}. Счастливого пути!");
+            this.rasst = 0;
+            Menu2(cars);
         }
-        protected void Stop(List<Avto> cars) //Торможение
+        protected virtual void Stop(List<Avto> cars) //Торможение
         {
             speed = 0;
             rasst = 0;
@@ -89,61 +89,61 @@ namespace Avtomobil
         }
         protected virtual void Razgon(List<Avto> cars) //Разгон
         {
-                if (dist == 0)
+            if (dist == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("! Цель поездки не задана !");
+                Console.ForegroundColor = ConsoleColor.White;
+                Menu2(cars);
+            }
+            else if (dist > 0)
+            {
+                if (top > 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("! Цель поездки не задана !");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    speed += 10;
+                    Out();
+                    Ezda(cars);
                     Menu2(cars);
                 }
-                else if (dist > 0)
+                else if (top == 0)
                 {
-                    if (top > 0)
+                    rasst = 0;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("!      Бак пуст      !");
+                    Console.WriteLine($"! Требуется заправка !");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("> Заправиться? (да/нет)");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    string? zap = Console.ReadLine();
+                    Console.ForegroundColor = ConsoleColor.White;
+                    switch (zap)
                     {
-                        speed += 10;
-                        Out();
-                        Ezda(cars);
-                        Menu2(cars);
-                    }
-                    else if (top == 0)
-                    {
-                        rasst = 0;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("!      Бак пуст      !");
-                        Console.WriteLine($"! Требуется заправка !");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine("> Заправиться? (да/нет)");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        string? zap = Console.ReadLine();
-                        Console.ForegroundColor = ConsoleColor.White;
-                        switch (zap)
-                        {
-                            case "да":
-                                Zapravka(cars); break;
-                            case "нет":
-                                Stop(cars); break;
-                        }
-                    }
-                    else if (top < 0)
-                    {
-                        rasst = 0;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("!      Бак пуст      !");
-                        Console.WriteLine($"! Требуется заправка !");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine("> Заправиться? (да/нет)");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        string? zap = Console.ReadLine();
-                        Console.ForegroundColor = ConsoleColor.White;
-                        switch (zap)
-                        {
-                            case "да":
-                                Zapravka(cars); break;
-                            case "нет":
-                                Stop(cars); break;
-                        }
+                        case "да":
+                            Zapravka(cars); break;
+                        case "нет":
+                            Stop(cars); break;
                     }
                 }
+                else if (top < 0)
+                {
+                    rasst = 0;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("!      Бак пуст      !");
+                    Console.WriteLine($"! Требуется заправка !");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("> Заправиться? (да/нет)");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    string? zap = Console.ReadLine();
+                    Console.ForegroundColor = ConsoleColor.White;
+                    switch (zap)
+                    {
+                        case "да":
+                            Zapravka(cars); break;
+                        case "нет":
+                            Stop(cars); break;
+                    }
+                }
+            }
         }
         protected double Zapravka(List<Avto> cars) //Заправка
         {
@@ -164,77 +164,31 @@ namespace Avtomobil
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("! Бак переполнен !");
                 Console.ForegroundColor = ConsoleColor.White;
-                Menu2(cars );
+                Menu2(cars);
             }
             return top;
         }
         protected virtual void Ezda(List<Avto> cars)
         {
-                if (speed > 0) //Если машина в принципе поехала
+            if (speed > 0) //Если машина в принципе поехала
+            {
+                if (top > 0)
                 {
-                    if (top > 0)
-                    {
-                        top -= ras;
-                        probeg += 100;
-                        rasst += 100;
-                    }
-                    else if ((top - ras) < 0 & speed > 0)
-                    {
-                        probeg -= 100;
-                        rasst -= 100;
-                        probeg += kilometragh;
-                        rasst += kilometragh;
-                        top = 0;
-                    }
-                    else if (top == 0)
-                    {
-                        rasst = 0;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("!      Бак пуст      !");
-                        Console.WriteLine($"! Требуется заправка !");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine("> Заправиться? (да/нет)");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        string? zap = Console.ReadLine();
-                        Console.ForegroundColor = ConsoleColor.White;
-                        switch (zap)
-                        {
-                            case "да":
-                                Zapravka(cars); break;
-                            case "нет":
-                                Stop(cars); break;
-                        }
-                    }
+                    top -= ras;
+                    probeg += 100;
+                    rasst += 100;
                 }
-                if (rasst >= dist & dist != 0) //Для цели поездки
+                else if ((top - ras) < 0 & speed > 0)
                 {
-                    double v = dist - (rasst - 100);
-                    top = (v * ras) / 100;
-                    probeg += v - 100;
-                    speed = 0;
-                    dist = 0;
-                    rasst = 0;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Ура! Вы преодолели свою цель поездки!");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine("Хотите задать ещё одну? Обратитесь в соответствующую вкладку меню.");
-                    Menu2(cars);
-                }
-                if (top < 2 && rasst < dist && rasst != 0)
-                {
-                    probeg += kilometragh - 100;
-                    rasst += kilometragh - 100;
+                    probeg -= 100;
+                    rasst -= 100;
+                    probeg += kilometragh;
+                    rasst += kilometragh;
                     top = 0;
-                    speed = 0;
                 }
-                kilometragh = Math.Round((top / ras) * 100); //На сколько километров хватит бензина
-                Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-                Console.WriteLine("Пройдено:     Пробег:      Остаток топлива:      Километраж при текущем уровне бензина в баке:    Скорость:");
-                Console.WriteLine($"\n{rasst}             {probeg}            {top}                     {kilometragh}                                            {speed}");
-                Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-                Console.WriteLine($"Ваша цель поездки: {dist} километров.");
-                if (top == 0)
+                else if (top == 0)
                 {
+                    rasst = 0;
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("!      Бак пуст      !");
                     Console.WriteLine($"! Требуется заправка !");
@@ -251,19 +205,65 @@ namespace Avtomobil
                             Stop(cars); break;
                     }
                 }
-                else
+            }
+            if (rasst >= dist & dist != 0) //Для цели поездки
+            {
+                double v = dist - (rasst - 100);
+                top = (v * ras) / 100;
+                probeg += v - 100;
+                speed = 0;
+                dist = 0;
+                rasst = 0;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Ура! Вы преодолели свою цель поездки!");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Хотите задать ещё одну? Обратитесь в соответствующую вкладку меню.");
+                Menu2(cars);
+            }
+            if (top < 2 && rasst < dist && rasst != 0)
+            {
+                probeg += kilometragh - 100;
+                rasst += kilometragh - 100;
+                top = 0;
+                speed = 0;
+            }
+            kilometragh = Math.Round((top / ras) * 100); //На сколько километров хватит бензина
+            Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+            Console.WriteLine("Пройдено:     Пробег:      Остаток топлива:      Километраж при текущем уровне бензина в баке:    Скорость:");
+            Console.WriteLine($"\n{rasst}             {probeg}            {top}                     {kilometragh}                                            {speed}");
+            Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+            Console.WriteLine($"Ваша цель поездки: {dist} километров.");
+            if (top == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("!      Бак пуст      !");
+                Console.WriteLine($"! Требуется заправка !");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("> Заправиться? (да/нет)");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                string? zap = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                switch (zap)
                 {
-                    Menu2(cars);
-                }            
+                    case "да":
+                        Zapravka(cars); break;
+                    case "нет":
+                        Stop(cars); break;
+                }
+            }
+            else
+            {
+                Menu2(cars);
+            }
         }
         protected virtual void Out()
         {
 
-                if (top < 2)
-                {
-                    speed = 0;
-                }
-                Console.WriteLine($"Номер авто: {nom} \nОбъём бака: {bak} \nРасход топлива (на 100 км): {ras}");
+            if (top < 2)
+            {
+                speed = 0;
+            }
+            Console.WriteLine($"Номер авто: {nom} \nОбъём бака: {bak} \nРасход топлива (на 100 км): {ras}");
         }
         protected virtual void Menu(List<Avto> cars)
         {
@@ -281,25 +281,25 @@ namespace Avtomobil
         }
         protected virtual void Menu2(List<Avto> cars)
         {
-                Console.WriteLine("> Бортовое меню:\n1 - Изменить Вашу цель поездки; 2 - Разогнаться; 3 - Тормозить; 4 - Заправиться; 5 - Выход в меню автомобилей; 6 - Авария.");
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                string? vybor2 = Console.ReadLine();
-                Console.ForegroundColor = ConsoleColor.White;
-                switch (vybor2)
-                {
-                    case "1":
-                        Info2(cars); break;
-                    case "2":
-                        Razgon(cars); break;
-                    case "3":
-                        Stop(cars); break;
-                    case "4":
-                        Zapravka(cars); break;
-                    case "5":
-                        Menu3(cars); break;
-                    case "6":
-                        Avaria(cars); break;
-                }           
+            Console.WriteLine("> Бортовое меню:\n1 - Изменить Вашу цель поездки; 2 - Разогнаться; 3 - Тормозить; 4 - Заправиться; 5 - Выход в меню автомобилей; 6 - Авария.");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            string? vybor2 = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            switch (vybor2)
+            {
+                case "1":
+                    Info2(cars); break;
+                case "2":
+                    Razgon(cars); break;
+                case "3":
+                    Stop(cars); break;
+                case "4":
+                    Zapravka(cars); break;
+                case "5":
+                    Menu3(cars); break;
+                case "6":
+                    Avaria(cars); break;
+            }
         }
 
         public static void Menu3(List<Avto> cars)
@@ -313,11 +313,22 @@ namespace Avtomobil
                 Console.ForegroundColor = ConsoleColor.White;
                 if (vybor1 == "1")
                 {
-                    cars.Add(new Avto());
-                }
-                else if (vybor1 == "0")
-                {
-                    cars.Add(new AvtoBus());
+                    Console.WriteLine("> Тип машины (1 - Легковая; 2 - Грузовая; 3 - Общественно-городская.)");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    int type = Convert.ToInt32(Console.ReadLine());
+                    Console.ForegroundColor = ConsoleColor.White;
+                    switch (type)
+                    {
+                        case 1:
+                            cars.Add(new Avto(1));
+                            break;
+                        case 2:
+                            cars.Add(new Gruzovik());
+                            break;
+                        case 3:
+                            cars.Add(new AvtoBus());
+                            break;
+                    }
                 }
                 else if (vybor1 == "2")
                 {
