@@ -303,6 +303,16 @@ namespace Avtomobil
                         kuzov += pogruz;
                         kilometrdoraz = ido;
                     }
+                    if (probeg == dist / 2 || probeg == kilometrdoraz)
+                    {
+                        probeg = dist / 2;
+                        kilometrdoraz = dist / 2;
+                        Console.WriteLine("");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("АВТОБУС ПРИБЫЛ НА КОНЕЧНУЮ ОСТАНОВКУ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("");
+                    }
                     /*if (rasst >= kilometrdoraz)
                     {
                         top -= topost;
@@ -331,7 +341,7 @@ namespace Avtomobil
                         }
                     }*/
                 }
-                if (rasst >= ido) //Для маршрута !!!
+                if (rasst >= kilometrdoraz) //Для маршрута !!!
                 {
                     kilometrdoraz = 0;
                     probeg = dist / 2;
@@ -410,7 +420,36 @@ namespace Avtomobil
             //while (rasst >= ido && ido != 0 && probeg >= dist / 2 &&  rasst >= kilometrdoraz)
             while (probeg <= dist && probeg > dist / 2)
             {
-                if (probeg >= dist && dist != 0 && probeg >= dist / 2) //Для маршрута !!!
+                if (rasst >= kilometrdoraz) //Для маршрута !!!
+                {
+                    kilometrdoraz = 0;
+                    probeg = dist / 2;
+                    speed = 0;
+                    rasst = 0;
+                    Console.WriteLine("");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("ВЫ ПРИБЫЛИ В ТОЧКУ РАЗГРУЗКИ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("");
+                    Console.WriteLine($"Остаток топлива: {Math.Round(top, 1)} литров.");
+                    Console.WriteLine($"Пробег: {Math.Round(probeg)} километров.");
+                    Console.WriteLine("Сколько выгрузить?");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    razgruz = Convert.ToInt32(Console.ReadLine());
+                    Console.ForegroundColor = ConsoleColor.White;
+                    if (razgruz > kuzov)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("! НЕДОПУСТИМЫЙ ВВОД !");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        kuzov -= razgruz;
+                        kilometrdoraz = dist / 2;
+                    }
+                }
+                if (rasst >= kilometrdoraz) //Для маршрута !!!
                 {
                     //topost = ((ido * ras) / 100);
                     kilometrdoraz = 0;
@@ -462,6 +501,60 @@ namespace Avtomobil
                     Menu2(cars);
                 }
             }
+                while (probeg >= dist && probeg > dist/2)
+                {
+                    if (rasst >= kilometrdoraz) //Для маршрута !!!
+                    {
+                        //topost = ((ido * ras) / 100);
+                        kilometrdoraz = 0;
+                        //top -= topost;
+                        probeg = dist;
+                        speed = 0;
+                        rasst = 0;
+                        Console.WriteLine("");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("БАЗА");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("");
+                        Console.WriteLine($"Остаток топлива: {Math.Round(top, 1)} литров.");
+                        Console.WriteLine($"Пробег: {Math.Round(probeg)} километров.");
+                        dist = 0;
+                    }
+                    if (top < 2 && rasst < dist && rasst != 0)
+                    {
+                        probeg += kilometragh - 100;
+                        rasst += kilometragh - 100;
+                        top = 0;
+                        speed = 0;
+                    }
+                    Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+                    Console.WriteLine("Пройдено:     Километраж следующей остановки:    Скорость:");
+                    Console.WriteLine($"\n{rasst}             {kilometrdoraz}                                     {speed}");
+                    Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+                    Console.WriteLine($"Ваша цель поездки: {dist / 2} километров.");
+                    if (top == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("!      Бак пуст      !");
+                        Console.WriteLine($"! Требуется заправка !");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("> Заправиться? (да/нет)");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        string? zap = Console.ReadLine();
+                        Console.ForegroundColor = ConsoleColor.White;
+                        switch (zap)
+                        {
+                            case "да":
+                                Zapravka(cars); break;
+                            case "нет":
+                                Stop(cars); break;
+                        }
+                    }
+                    else
+                    {
+                        Menu2(cars);
+                    }
+                }
+            }
         }
     }
-}
