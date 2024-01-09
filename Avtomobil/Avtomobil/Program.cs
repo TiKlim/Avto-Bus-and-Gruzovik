@@ -11,9 +11,7 @@ namespace Avtomobil
         {
             Avto.cars = new List<Avto>();
             Console.WriteLine("> Доброго времени суток.");
-            Avto.Menu3(Avto.cars);
+            Avtosalon.Menu3(Avto.cars);
         }
     }
 }
-
-

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Avtomobil
+﻿namespace Avtomobil
 {
     internal class AvtoBus : Avto
     {
@@ -61,11 +55,12 @@ namespace Avtomobil
                 case "1":
                     Info(cars); break;
                 case "2":
-                    Menu3(cars); break;
+                    Avtosalon.Menu3(cars); break;
             }
         }
-        protected override void Menu2(List<Avto> cars)
+        public override void Menu2(List<Avto> cars)
         {
+
             Console.WriteLine("> Бортовое меню:\n1 - Изменить Ваш маршрут; 2 - Разогнаться; 3 - Тормозить; 4 - Заправиться; 5 - Выход в меню автомобилей; 6 - Авария.");
             Console.ForegroundColor = ConsoleColor.Cyan;
             string? vybor2 = Console.ReadLine();
@@ -81,7 +76,7 @@ namespace Avtomobil
                 case "4":
                     Zapravka(cars); break;
                 case "5":
-                    Menu3(cars); break;
+                    Avtosalon.Menu3(cars); break;
                 case "6":
                     Avaria(cars); break;
             }
@@ -203,14 +198,6 @@ namespace Avtomobil
                     }
                 }
             }
-            if (ludy == mesta)
-            {
-                ras += 5;
-            }
-            if (ludy >= (mesta/2) && ludy < mesta)
-            {
-                ras += 3;
-            }
         }
         protected override void Ezda(List<Avto> cars)
         {
@@ -274,8 +261,10 @@ namespace Avtomobil
                 if (rasst >= otsihdosih & otsihdosih != 0) //Для маршрута
                 {
                     kilometrdoost -= otsihdosih;
+
                     top -= topost;
                     probeg += otsihdosih;
+
                     speed = 0;
                     rasst = 0;
                     Console.WriteLine("");
@@ -287,9 +276,7 @@ namespace Avtomobil
                     Console.WriteLine($"Пробег: {Math.Round(probeg)} километров.");
                     Console.WriteLine($"Пассажиры: {ludy}.");
                     Console.WriteLine("Сколько людей вошло?");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
                     int prihod = Convert.ToInt32(Console.ReadLine());
-                    Console.ForegroundColor = ConsoleColor.White;
                     if (prihod > mesta)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -302,9 +289,7 @@ namespace Avtomobil
                         ludy += prihod;
                     }
                     Console.WriteLine("Сколько людей вышло?");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
                     int uhod = Convert.ToInt32(Console.ReadLine());
-                    Console.ForegroundColor = ConsoleColor.White;
                     if (uhod > mesta)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -378,7 +363,7 @@ namespace Avtomobil
             }
             while (probeg <= dist && probeg >= dist / 2)
             {
-                if (rasst >= otsihdosih && otsihdosih != 0 && probeg >= dist / 2 && probeg >= otsihdosih * ostanovky && rasst >= kilometrdoost) //Для маршрута !!!
+                if (rasst >= otsihdosih && otsihdosih != 0 && probeg >= dist / 2 && probeg >= otsihdosih * ostanovky && probeg <= dist) //Для маршрута !!!
                 {
                     kilometrdoost = 0;
                     probeg = dist;
@@ -400,11 +385,13 @@ namespace Avtomobil
                     top = 0;
                     speed = 0;
                 }
-                if (rasst >= otsihdosih && otsihdosih != 0 && probeg >= otsihdosih && kilometrdoost >= otsihdosih) //Для маршрута
+                if (rasst >= otsihdosih & otsihdosih != 0) //Для маршрута
                 {
                     kilometrdoost -= otsihdosih;
+
                     top -= topost;
                     probeg += otsihdosih;
+
                     speed = 0;
                     rasst = 0;
                     Console.WriteLine("");
@@ -416,9 +403,7 @@ namespace Avtomobil
                     Console.WriteLine($"Пробег: {Math.Round(probeg)} километров.");
                     Console.WriteLine($"Пассажиры: {ludy}.");
                     Console.WriteLine("Сколько людей вошло?");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
                     int prihod = Convert.ToInt32(Console.ReadLine());
-                    Console.ForegroundColor = ConsoleColor.White;
                     if (prihod > mesta)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -431,9 +416,7 @@ namespace Avtomobil
                         ludy += prihod;
                     }
                     Console.WriteLine("Сколько людей вышло?");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
                     int uhod = Convert.ToInt32(Console.ReadLine());
-                    Console.ForegroundColor = ConsoleColor.White;
                     if (uhod > mesta)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -477,6 +460,10 @@ namespace Avtomobil
                     Menu2(cars);
                 }
             }
+        }
+        protected override void Avaria(List<Avto> cars)
+        {
+            base.Avaria(cars);
         }
     }
 }
